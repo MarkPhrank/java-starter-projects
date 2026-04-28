@@ -1,0 +1,161 @@
+import java.util.Scanner;
+
+/**
+ * Консольный калькулятор для выполнения базовых арифметических операций.
+ * Поддерживает: +, -, *, /, %, возведение в степень (^), квадратный корень (sqrt).
+ * 
+ * @author Ваше Имя
+ * @version 1.0
+ */
+public class Calculator {
+    
+    private static final Scanner scanner = new Scanner(System.in);
+    
+    public static void main(String[] args) {
+        printWelcomeMessage();
+        
+        boolean running = true;
+        while (running) {
+            printMenu();
+            String choice = scanner.nextLine().trim();
+            
+            switch (choice) {
+                case "1":
+                    performBinaryOperation();
+                    break;
+                case "2":
+                    performUnaryOperation();
+                    break;
+                case "0":
+                    running = false;
+                    System.out.println("До свидания!");
+                    break;
+                default:
+                    System.out.println("Неверный выбор. Пожалуйста, введите 1, 2 или 0.");
+            }
+            
+            if (running) {
+                System.out.println("\nНажмите Enter для продолжения...");
+                scanner.nextLine();
+            }
+        }
+        
+        scanner.close();
+    }
+    
+    /**
+     * Выводит приветственное сообщение.
+     */
+    private static void printWelcomeMessage() {
+        System.out.println("=========================================");
+        System.out.println("   Добро пожаловать в Консольный Калькулятор!");
+        System.out.println("=========================================");
+    }
+    
+    /**
+     * Выводит главное меню.
+     */
+    private static void printMenu() {
+        System.out.println("\n--- Меню ---");
+        System.out.println("1. Бинарная операция (a + b, a - b и т.д.)");
+        System.out.println("2. Унарная операция (sqrt(a))");
+        System.out.println("0. Выход");
+        System.out.print("Ваш выбор: ");
+    }
+    
+    /**
+     * Выполняет бинарную операцию (с двумя числами).
+     */
+    private static void performBinaryOperation() {
+        System.out.println("\nДоступные операции: +, -, *, /, %, ^ (степень)");
+        System.out.print("Введите выражение (например: 5 + 3): ");
+        String input = scanner.nextLine().trim();
+        
+        String[] parts = input.split(" ");
+        if (parts.length != 3) {
+            System.out.println("Ошибка: неверный формат. Используйте: число оператор число");
+            return;
+        }
+        
+        try {
+            double a = parseNumber(parts[0]);
+            String operator = parts[1];
+            double b = parseNumber(parts[2]);
+            
+            double result = calculateBinary(a, b, operator);
+            System.out.printf("Результат: %.4f%n", result);
+            
+        } catch (NumberFormatException e) {
+            System.out.println("Ошибка: введите корректные числа.");
+        } catch (ArithmeticException | IllegalArgumentException e) {
+            System.out.println("Ошибка: " + e.getMessage());
+        }
+    }
+    
+    /**
+     * Выполняет унарную операцию (с одним числом).
+     */
+    private static void performUnaryOperation() {
+        System.out.println("\nДоступные операции: sqrt (квадратный корень)");
+        System.out.print("Введите выражение (например: sqrt 25): ");
+        String input = scanner.nextLine().trim();
+        
+        String[] parts = input.split(" ");
+        if (parts.length != 2) {
+            System.out.println("Ошибка: неверный формат. Используйте: оператор число");
+            return;
+        }
+        
+        String operator = parts[0].toLowerCase();
+        try {
+            double a = parseNumber(parts[1]);
+            double result = calculateUnary(a, operator);
+            System.out.printf("Результат: %.4f%n", result);
+        } catch (NumberFormatException e) {
+            System.out.println("Ошибка: введите корректное число.");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка: " + e.getMessage());
+        }
+    }
+    
+    /**
+     * Парсит число с поддержкой целых и дробных (точка).
+     */
+    private static double parseNumber(String s) {
+        return Double.parseDouble(s);
+    }
+    
+    /**
+     * Выполняет бинарную арифметику.
+     */
+    private static double calculateBinary(double a, double b, String operator) {
+        return switch (operator) {
+            case "+" -> a + b;
+            case "-" -> a - b;
+            case "*" -> a * b;
+            case "/" -> {
+                if (b == 0) throw new ArithmeticException("Деление на ноль!");
+                yield a / b;
+            }
+            case "%" -> {
+                if (b == 0) throw new ArithmeticException("Остаток от деления на ноль!");
+                yield a % b;
+            }
+            case "^" -> Math.pow(a, b);
+            default -> throw new IllegalArgumentException("Неизвестный оператор: " + operator);
+        };
+    }
+    
+    /**
+     * Выполняет унарную операцию.
+     */
+    private static double calculateUnary(double a, String operator) {
+        return switch (operator) {
+            case "sqrt" -> {
+                if (a < 0) throw new IllegalArgumentException("Квадратный корень из отрицательного числа!");
+                yield Math.sqrt(a);
+            }
+            default -> throw new IllegalArgumentException("Неизвестная операция: " + operator);
+        };
+    }
+}
