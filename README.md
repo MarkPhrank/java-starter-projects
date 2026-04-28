@@ -1,2 +1,2 @@
 # java-starter-projects
-cool_task_manager
+cool_&_boom
