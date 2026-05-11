@@ -16,4 +16,5 @@
 2. Склонируйте репозиторий:
    ```bash
    git clone https://github.com/MarkPhrank/java-starter-projects
-   cd сalculator
+   cd java-starter-projects
+   java calculator
