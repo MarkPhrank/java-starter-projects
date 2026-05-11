@@ -15,5 +15,5 @@
 1. Убедитесь, что установлен JDK 17 или новее.
 2. Склонируйте репозиторий:
    ```bash
-   git clone https://github.com/MarkPhrank/ConsoleCalculator.git
-   cd ConsoleCalculator
+   git clone https://github.com/MarkPhrank/java-starter-projects/blob/main/calculator
+   cd сalculator
