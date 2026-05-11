@@ -17,4 +17,4 @@
    ```bash
    git clone https://github.com/MarkPhrank/java-starter-projects
    cd java-starter-projects
-   java calculator
+   java calculator.java
